@@ -1,0 +1,157 @@
+<form (ngSubmit)="submitForm()" [formGroup]="bookingForm" class="booking-form">
+  
+ 
+<mat-form-field>
+  <mat-label><mat-icon>location_on</mat-icon>City</mat-label>
+  <mat-select formControlName="city" placeholder="Select City" (selectionChange)="onCityChange($event.value)">
+    <mat-option *ngFor="let city of cities" [value]="city">{{ city }}</mat-option>
+  </mat-select>
+</mat-form-field>
+<mat-error *ngIf="bookingForm.get('city')?.invalid && bookingForm.get('city')?.touched">City is required</mat-error>
+
+  <br />
+
+  
+  
+  <mat-radio-group formControlName="theaterLocation">
+    <mat-radio-button *ngFor="let location of availableTheaters" [value]="location">{{ location }}</mat-radio-button>
+  </mat-radio-group>
+  <mat-error *ngIf="bookingForm.get('theaterLocation')?.invalid && bookingForm.get('theaterLocation')?.touched">Theater location is required</mat-error>
+  <br />
+
+
+  <mat-form-field>
+    <mat-label><mat-icon>movie</mat-icon>Movie</mat-label>
+    <mat-select formControlName="movie" placeholder="Select Movie">
+      <mat-option *ngFor="let movie of availableMovies" [value]="movie">{{ movie }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-error *ngIf="bookingForm.get('movie')?.invalid && bookingForm.get('movie')?.touched">Movie is required</mat-error>
+  <br />
+
+
+  <mat-form-field>
+    <mat-label>Date</mat-label>
+    <input matInput [matDatepicker]="picker" formControlName="date" />
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+  <mat-error
+    *ngIf="bookingForm.get('date')?.invalid && bookingForm.get('date')?.touched"
+    >Date is required</mat-error
+  >
+  <br />
+
+  <mat-form-field>
+    <mat-label><mat-icon>schedule</mat-icon>ShowTime</mat-label>
+    <mat-select formControlName="showTime">
+      <mat-option *ngFor="let time of showTimes" [value]="time">{{ time }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-error *ngIf="bookingForm.get('showTime')?.invalid && bookingForm.get('showTime')?.touched">
+    Showtime is required
+  </mat-error>
+  <br />
+
+
+  <mat-form-field>
+    <mat-label><mat-icon>person</mat-icon>First Name</mat-label>
+    <input matInput formControlName="firstName" />
+    <mat-error
+      *ngIf="
+        bookingForm.get('firstName')?.invalid &&
+        bookingForm.get('firstName')?.touched
+      "
+      >First name is required</mat-error
+    >
+  </mat-form-field>
+
+  
+  <mat-form-field>
+    <mat-label><mat-icon>person</mat-icon>Last Name</mat-label>
+    <input matInput formControlName="lastName" />
+    <mat-error
+      *ngIf="
+        bookingForm.get('lastName')?.invalid &&
+        bookingForm.get('lastName')?.touched
+      "
+      >Last name is required</mat-error
+    >
+  </mat-form-field>
+  <br />
+
+  <mat-form-field>
+    
+    <mat-label><mat-icon>email</mat-icon>Email</mat-label>
+    <input matInput type="email" formControlName="email" />
+    <mat-error
+      *ngIf="
+        bookingForm.get('email')?.invalid && bookingForm.get('email')?.touched
+      "
+      >Valid email is required</mat-error
+    >
+  </mat-form-field>
+  <br />
+
+  <mat-radio-group formControlName="gender">
+    <mat-radio-button value="Male"><mat-icon>male</mat-icon>Male</mat-radio-button>
+    <mat-radio-button value="Female"><mat-icon>female</mat-icon>Female</mat-radio-button>
+  </mat-radio-group>
+  <mat-error
+    *ngIf="
+      bookingForm.get('gender')?.invalid && bookingForm.get('gender')?.touched
+    "
+    >Gender is required</mat-error
+  >
+  <br />
+
+  <!-- Age -->
+  <mat-form-field>
+    <mat-label><mat-icon>person</mat-icon>Age</mat-label>
+    <input matInput type="number" formControlName="age" />
+    <mat-error
+      *ngIf="bookingForm.get('age')?.invalid && bookingForm.get('age')?.touched"
+      >Age is required</mat-error
+    >
+  </mat-form-field>
+  <br />
+  <!-- Number of Tickets -->
+  <mat-form-field>
+    <mat-label><mat-icon>confirmation_number</mat-icon>Number of tickets</mat-label>
+    <input
+      matInput
+      type="number"
+      formControlName="numberOfTickets"
+      placeholder="Number of Tickets"
+      (input)="calculateTotalAmount()"
+    />
+    <mat-error
+      *ngIf="
+        bookingForm.get('numberOfTickets')?.invalid &&
+        bookingForm.get('numberOfTickets')?.touched
+      "
+      >Number of tickets is required</mat-error
+    >
+  </mat-form-field>
+  <br />
+
+  <!-- Total Amount -->
+
+  <div
+    class="total-amount-display"
+    [ngClass]="{ 'negative-value': totalAmount < 0 }"
+  >
+    <span><mat-icon>attach_money</mat-icon>Total Amount: </span><span>${{ totalAmount }}</span>
+  </div>
+  <br />
+
+  <!-- Submit Button -->
+  <button
+    mat-raised-button
+    color="primary"
+    type="submit"
+    [disabled]="bookingForm.invalid"
+  >
+    Submit
+  </button>
+</form>
